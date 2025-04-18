@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let a = parseInt(prompt("Enter your weight: "));
+        let b = parseInt(prompt("Enter desired bodyfat percentage: "));
+
+        for (let a = 0; a <= 100; a++) {
+            for (let b = 0; b <= 100; b++) {
+                let c = a * (1 - b / 100);
+                let d = a - c;
+                let e = d / a * 100;
+                document.write("Weight: " + a + ", Bodyfat percentage: " + b + ", Lean mass: " + c + ", Fat mass: " + d + ", Bodyfat percentage: " + e + "<br>");
+            }
+        }
+        document.write("<br>Weight: " + a + ", Desired bodyfat percentage: " + b + ", Lean mass: " + c + ", Fat mass: " + d + ", Bodyfat percentage: " + e);
+    </script>
+</body>
+</html>

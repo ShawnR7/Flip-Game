@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let a = parseInt(prompt("Enter annual salary: "));
+
+
+        if (a <= 250000) {
+            document.write("No tax payable");
+        } else if (a <= 500000) {
+            let tax = (a - 250000) * 0.05;
+            document.write("Tax payable: " + tax);
+        } else if (a <= 1000000) {
+            let tax = (a - 500000) * 0.1 + 12500;
+            document.write("Tax payable: " + tax);
+        } else {
+            let tax = (a - 1000000) * 0.3 + 62500;
+            document.write("Tax payable: " + tax);
+        }
+        document.write("<br>Annual Salary: " + a);  
+    </script>
+</body>
+</html>

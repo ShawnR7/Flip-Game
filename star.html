@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blank JS in HTML</title>
+</head>
+<body>
+  <script>
+    function stars(a,b) {
+      for(let i = 0; i < a; i++) {
+        for(let j = 0; j < b; j++) {
+          document.write("*");
+        }
+        document.write("<br>");
+      }
+    }
+    let col = parseInt(prompt("Enter the number of columns: "));
+    let row = parseInt(prompt("Enter the number of rows: "));
+
+    stars(col, row);
+
+
+  </script>
+</body>
+</html>

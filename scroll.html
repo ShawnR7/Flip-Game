@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Scroll Counter</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+      height: 5000px; /* So there's lots of room to scroll */
+    }
+
+    .counter-box {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #fff;
+      border: 2px solid #F77051;
+      padding: 2rem 3rem;
+      border-radius: 1rem;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+
+    .label {
+      font-size: 1.5rem;
+      color: #722F37;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .scroll-count {
+      font-size: 3rem;
+      color: #F77051;
+      font-weight: bold;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="counter-box">
+    <span class="label">Scroll Count</span>
+    <span class="scroll-count">0</span>
+  </div>
+
+  <script>
+    let scrollCount = 0;
+    let lastScroll = 0;
+    const scrollDisplay = document.querySelector('.scroll-count');
+
+    window.addEventListener('scroll', () => {
+      const currentScroll = window.scrollY;
+
+      if (Math.abs(currentScroll - lastScroll) > 190) { // only count noticeable scrolls
+        scrollCount++;
+        scrollDisplay.textContent = scrollCount;
+        lastScroll = currentScroll;
+      }
+    });
+  </script>
+</body>
+</html>
