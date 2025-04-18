@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Memory Match Game</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: #fef6f3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .game-board {
+      display: grid;
+      grid-template-columns: repeat(4, 80px);
+      gap: 1rem;
+      padding: 1rem;
+      background: #fff;
+      border-radius: 1rem;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+
+    .card {
+      width: 80px;
+      height: 80px;
+      font-size: 2rem;
+      background: #F77051;
+      color: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: 0.3s;
+      user-select: none;
+    }
+
+    .card.revealed {
+      color: #fff;
+      background: #722F37;
+    }
+
+    .card.matched {
+      background: #52c41a;
+      color: #fff;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="game-board" id="gameBoard"></div>
+
+  <script>
+    const emojis = ['🍕','🍕','🐱','🐱','🎈','🎈','🚀','🚀','🎮','🎮','🍩','🍩','👻','👻','🌈','🌈'];
+    const shuffled = emojis.sort(() => 0.5 - Math.random());
+
+    const board = document.getElementById('gameBoard');
+
+    let flippedCards = [];
+    let lockBoard = false;
+
+    shuffled.forEach((emoji, i) => {
+      const card = document.createElement('div');
+      card.classList.add('card');
+      card.dataset.emoji = emoji;
+      card.textContent = emoji;
+      card.addEventListener('click', () => {
+        if (lockBoard || card.classList.contains('revealed') || card.classList.contains('matched')) return;
+
+        card.classList.add('revealed');
+        flippedCards.push(card);
+
+        if (flippedCards.length === 2) {
+          lockBoard = true;
+
+          const [first, second] = flippedCards;
+
+          if (first.dataset.emoji === second.dataset.emoji) {
+            first.classList.add('matched');
+            second.classList.add('matched');
+            flippedCards = [];
+            lockBoard = false;
+          } else {
+            setTimeout(() => {
+              first.classList.remove('revealed');
+              second.classList.remove('revealed');
+              flippedCards = [];
+              lockBoard = false;
+            }, 1000);
+          }
+        }
+      });
+
+      board.appendChild(card);
+    });
+  </script>
+</body>
+</html>
+
