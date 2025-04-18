@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Cursor Chase Game</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+            background: #1e1e1e;
+            font-family: sans-serif;
+            color: white;
+            cursor: none;
+        }
+
+        .chaser {
+            width: 30px;
+            height: 30px;
+            background: #FF4343;
+            border-radius: 50%;
+            position: fixed;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .cursor-dot {
+            width: 10px;
+            height: 10px;
+            background: white;
+            border-radius: 50%;
+            position: fixed;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 20;
+        }
+
+        .scoreboard {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 30;
+        }
+
+        .score-container {
+            background: linear-gradient(135deg, #2c2c2c, #1a1a1a);
+            border: 2px solid #ff4343;
+            border-radius: 12px;
+            padding: 0.6rem 1.2rem;
+            box-shadow: 0 0 10px rgba(255, 67, 67, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            color: #ff4343;
+            letter-spacing: 1px;
+        }
+
+        .score-container .label {
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        .score-container .value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                text-shadow: 0 0 5px #ff4343;
+            }
+
+            50% {
+                text-shadow: 0 0 12px #ff4343;
+            }
+        }
+
+        /* Optional: futuristic font (Orbitron) */
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+
+
+        .game-over-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 999;
+            transition: opacity 1.2s ease;
+        }
+
+        .game-over-screen.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .wasted {
+            font-family: Impact, sans-serif;
+            font-size: 5rem;
+            color: #ff0000;
+            letter-spacing: 0.1em;
+            text-shadow: 0 0 10px #ff0000;
+            animation: wasted-fade 1s ease-in-out;
+        }
+
+        .subtext {
+            margin-top: 1rem;
+            font-size: 1.2rem;
+            color: #aaa;
+        }
+
+        @keyframes wasted-fade {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="chaser"></div>
+    <div class="cursor-dot"></div>
+    <div class="scoreboard">
+        <div class="score-container">
+            <span class="label">SCORE</span>
+            <span class="value" id="score">0</span>
+        </div>
+    </div>
+
+
+    <div class="game-over-screen" id="gameOverScreen">
+        <div class="wasted">WASTED</div>
+        <div class="subtext">Refresh to try again</div>
+    </div>
+
+    <script>
+        const chaser = document.querySelector('.chaser');
+        const cursorDot = document.querySelector('.cursor-dot');
+        const scoreText = document.getElementById('score');
+        const gameOverScreen = document.getElementById('gameOverScreen');
+
+        let cursorX = window.innerWidth / 2;
+        let cursorY = window.innerHeight / 2;
+
+        let chaserX = Math.random() * window.innerWidth;
+        let chaserY = Math.random() * window.innerHeight;
+
+        let score = 0;
+        let gameRunning = true;
+
+        document.addEventListener('mousemove', (e) => {
+            cursorX = e.clientX;
+            cursorY = e.clientY;
+            cursorDot.style.left = `${cursorX}px`;
+            cursorDot.style.top = `${cursorY}px`;
+        });
+
+        function animateChase() {
+            if (!gameRunning) return;
+
+            const speed = 0.02;
+            chaserX += (cursorX - chaserX) * speed;
+            chaserY += (cursorY - chaserY) * speed;
+
+            chaser.style.left = `${chaserX}px`;
+            chaser.style.top = `${chaserY}px`;
+
+            const dx = cursorX - chaserX;
+            const dy = cursorY - chaserY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < 20) {
+                gameOver();
+                return;
+            }
+
+            score++;
+            scoreText.textContent = score;
+
+            requestAnimationFrame(animateChase);
+        }
+
+        function gameOver() {
+            gameRunning = false;
+            gameOverScreen.classList.add('show');
+        }
+
+        animateChase();
+    </script>
+
+</body>
+
+</html>
